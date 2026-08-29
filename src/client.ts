@@ -19,6 +19,13 @@ export class DocumentationClient {
     );
   }
 
+  async searchDocuments(projectId: string, query: string): Promise<DocumentSummary[]> {
+    const params = new URLSearchParams({ query });
+    return this.#request<DocumentSummary[]>(
+      `v1/projects/${encodeURIComponent(projectId)}/documents/search?${params.toString()}`,
+    );
+  }
+
   async #request<T>(path: string): Promise<T> {
     const response = await fetch(new URL(path, this.#baseUrl), {
       headers: {
